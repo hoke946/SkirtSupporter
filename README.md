@@ -9,11 +9,12 @@ LonghairSupporterの詳細は https://sites.google.com/view/longhairsup をご�
 ・当ツールを使用したことにより発生したいかなるトラブルについても、製作者は一切責任を負いません。  
 
 ## バージョンコード
-SkirtSupporter : 1.1.3
-LonghairSupporter : 1.0.0
-
+SkirtSupporter : 1.1.4  
+LonghairSupporter : 1.0.1  
+  
 ## 更新履歴
 [SkirtSupporter]  
+2020/1/30 チェック機能をアップグレード  
 2019/8/22 SkirtBones自動取得の潜在的な不具合を修正  
 2019/8/22 SkirtBones自動取得の不具合を修正  
 2019/8/17 Humanoid以外のアバターに対応　SkirtBonesの自動設定にHumanoidボーンを除外  
@@ -24,4 +25,5 @@ LonghairSupporter : 1.0.0
 2019/7/28 DynamicBoneの状態によってエラーとなる不具合を修正  
   
 [LonghairSupporter]  
+2020/1/30 チェック機能をアップグレード  
 2019/8/26 公開
