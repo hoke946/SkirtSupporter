@@ -9,7 +9,7 @@ LonghairSupporterの詳細は https://sites.google.com/view/longhairsup をご�
 ・当ツールを使用したことにより発生したいかなるトラブルについても、製作者は一切責任を負いません。  
 
 ## バージョンコード
-SkirtSupporter : 1.1.4  
+SkirtSupporter : 1.2.0  
 LonghairSupporter : 1.0.1  
   
 ## 更新履歴
