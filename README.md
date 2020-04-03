@@ -12,11 +12,12 @@ LonghairSupporterの詳細は https://sites.google.com/view/longhairsup をご�
 ・当ツールを使用したことにより発生したいかなるトラブルについても、製作者は一切責任を負いません。  
 
 ## バージョンコード
-SkirtSupporter : 1.2.0  
-LonghairSupporter : 1.0.1  
+SkirtSupporter : 1.2.1  
+LonghairSupporter : 1.0.2  
   
 ## 更新履歴
 [SkirtSupporter]  
+2020/4/3  1.2.1 Unity2018.4.20f1対応  
 2020/2/9  1.2.0 ねじり打ち消し機構(TwistCancel)導入　何もせず再実行を可能とする　コライダーObjectのスケール修正  
 2020/1/30 1.1.4 チェック機能をアップグレード  
 2019/8/22 1.1.3 SkirtBones自動取得の潜在的な不具合を修正  
@@ -30,6 +31,7 @@ LonghairSupporter : 1.0.1
 2019/7/27 1.0.0 公開  
   
 [LonghairSupporter]  
+2020/4/3  1.0.2 Unity2018.4.20f1対応　何もせず再実行を可能とする  
 2020/1/30 1.0.1 チェック機能をアップグレード  
 2019/8/26 1.0.0 公開  
   
