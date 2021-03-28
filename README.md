@@ -3,6 +3,13 @@
 SkirtSupporterの詳細は https://sites.google.com/view/skirtsup をご覧ください。  
 LonghairSupporterの詳細は https://sites.google.com/view/longhairsup をご覧ください。  
 
+## ダウンロード
+[こちら](https://github.com/hoke946/SkirtSupporter/releases)から入手できます。  
+
+## 説明書
+⇒[SkirtSupporter](https://sites.google.com/view/skirtsup)  
+⇒[LonghairSupporter](https://sites.google.com/view/longhairsup)  
+
 ## 利用について
 ・当ツールのソースコードの改変、二次利用は問題ありません。  
 　その場合、必須ではありませんが、当ツールを参考にしたなどの紹介があると嬉しいです。  
@@ -11,11 +18,13 @@ LonghairSupporterの詳細は https://sites.google.com/view/longhairsup をご�
 ・当ツールの製作元を偽って配布する行為のみ、禁止です。  
 ・当ツールを使用したことにより発生したいかなるトラブルについても、製作者は一切責任を負いません。  
 
-## バージョンコード
+## 最新バージョン
 SkirtSupporter : 1.2.1  
 LonghairSupporter : 1.0.2  
   
 ## 更新履歴
+2021/3/28 Git運用見直し  
+  
 [SkirtSupporter]  
 2020/4/3  1.2.1 Unity2018.4.20f1対応  
 2020/2/9  1.2.0 ねじり打ち消し機構(TwistCancel)導入　何もせず再実行を可能とする　コライダーObjectのスケール修正  
