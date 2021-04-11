@@ -19,11 +19,14 @@ LonghairSupporterの詳細は https://sites.google.com/view/longhairsup をご�
 ・当ツールを使用したことにより発生したいかなるトラブルについても、製作者は一切責任を負いません。  
 
 ## 最新バージョン
-SkirtSupporter : 1.2.1  
+SkirtSupporter : 1.2.2  
 LonghairSupporter : 1.0.2  
   
 ## 更新履歴
 2021/3/28 Git運用見直し  
+  
+  
+それまでの更新履歴  
   
 [SkirtSupporter]  
 2020/4/3  1.2.1 Unity2018.4.20f1対応  

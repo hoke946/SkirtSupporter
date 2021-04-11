@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -156,5 +157,29 @@ public class SkirtSupporter : MonoBehaviour {
             }
         }
         skirtBones = newlist;
+    }
+
+    private void Start()
+    {
+        if (twistCancel && skirtsParent)
+        {
+            StartCoroutine(ResetSequence());
+        }
+    }
+
+    private IEnumerator ResetSequence()
+    {
+        DynamicBone[] dbs = skirtsParent.GetComponentsInChildren<DynamicBone>();
+        foreach (DynamicBone db in dbs)
+        {
+            db.enabled = false;
+        }
+
+        yield return null;
+
+        foreach (DynamicBone db in dbs)
+        {
+            db.enabled = true;
+        }
     }
 }
