@@ -4,7 +4,9 @@ SkirtSupporterの詳細は https://sites.google.com/view/skirtsup をご覧く�
 LonghairSupporterの詳細は https://sites.google.com/view/longhairsup をご覧ください。  
 
 ## ダウンロード
-[こちら](https://github.com/hoke946/SkirtSupporter/releases)から入手できます。  
+こちらから入手できます。  
+[SkirtSupporter最新版 v1.2.2](https://github.com/hoke946/SkirtSupporter/releases/tag/SSv1.2.2)  
+[LonghairSupporter最新版 v1.0.2](https://github.com/hoke946/SkirtSupporter/releases/tag/SSv1.2.1_LSv1.0.2) 
 
 ## 説明書
 ⇒[SkirtSupporter](https://sites.google.com/view/skirtsup)  
