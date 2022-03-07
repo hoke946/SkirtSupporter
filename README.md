@@ -1,4 +1,29 @@
 # SkirtSupporter / LonghairSupporter
+## 緊急お知らせ
+これはVRChat用アバターのDynamicBone設定を支援するツールでしたが、  
+VRChatのPhysBone対応を受け、取り急ぎPhysBone対応版を用意しました。  
+  
+・Insideコライダーがないため、Planeコライダーで代用しました。  
+・SkirtHangはPhysBoneでは機能しないため、Constraintで代用しました。  
+・TwistCancelはPhysBoneでは機能しないため、Constraintで代用しました。  
+・HairHangは諦めました。  
+・SkirtHangやHairHangで階層を組み替えていたボーンを、未使用の場合は本来のParentの位置に戻すようにしました。  
+  
+まだ、細かい説明はありませんが、使用条件、使用方法はDynamicBone版とほぼ同様です。  
+DynamicBone版はVRChatのPhysBone移行を機に終息させる予定です。
+
+## ダウンロード
+こちらから入手できます。  
+[SkirtSupporterPB最新版 v0.0.1](https://github.com/hoke946/SkirtSupporter/releases/tag/SSPBv0.0.1_LSPBv0.0.1)  
+[LonghairSupporterPB最新版 v0.0.1](https://github.com/hoke946/SkirtSupporter/releases/tag/SSPBv0.0.1_LSPBv0.0.1) 
+
+## 最新バージョン
+SkirtSupporterPB : 0.0.1  
+LonghairSupporterPB : 0.0.1  
+  
+-----
+
+## DynamicBone版
 これはVRChat用アバターのDynamicBone設定を支援するツールです。  
 SkirtSupporterの詳細は https://sites.google.com/view/skirtsup をご覧ください。  
 LonghairSupporterの詳細は https://sites.google.com/view/longhairsup をご覧ください。  
