@@ -328,23 +328,30 @@ public class SkirtSupporterPBEditor : Editor
 
     private void ClearSkirtHangObject()
     {
+        Transform skirtparent = null;
+
         foreach (SkirtSupporterPB.BoneSet skirt in skirtSupporter.skirtBones)
         {
             if (skirt.boneObject.transform.parent != skirtSupporter.skirtsParent)
             {
                 var parent = skirt.boneObject.transform.parent;
+                if (parent != null)
+                {
+                    skirtparent = parent;
+                }
                 skirt.boneObject.transform.SetParent(skirtSupporter.skirtsParent.transform, true);
-                if (parent != null && parent.name == "SkirtRoot")
-                {
-                    DestroyImmediate(parent.gameObject);
-                }
-                else if (parent != null && parent.name == "SkirtBranch")
-                {
-                    if (parent.parent != null && parent.parent.name == "SkirtRoot")
-                    {
-                        DestroyImmediate(parent.parent.gameObject);
-                    }
-                }
+            }
+        }
+
+        if (skirtparent != null && skirtparent.name == "SkirtRoot")
+        {
+            DestroyImmediate(skirtparent.gameObject);
+        }
+        else if (skirtparent != null && skirtparent.name == "SkirtBranch")
+        {
+            if (skirtparent.parent != null && skirtparent.parent.name == "SkirtRoot")
+            {
+                DestroyImmediate(skirtparent.parent.gameObject);
             }
         }
     }
