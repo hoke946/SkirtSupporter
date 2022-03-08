@@ -104,7 +104,7 @@ public class SkirtSupporterPBEditor : Editor
         targets.Add(skirtSupporter.hips.Find("_SubLegL"));
         targets.Add(skirtSupporter.rightUpperLeg.Find("PBC_R"));
         targets.Add(skirtSupporter.leftUpperLeg.Find("PBC_L"));
-        targets.Add(skirtSupporter.hips.parent.Find("_HangFrontTarget"));
+        targets.Add(skirtSupporter.hips.Find("_HangFrontTarget"));
         targets.Add(skirtSupporter.hips.parent.Find("_HangAimParent"));
 
         // 旧SkirtSupporterの要素やDynamicBoneを削除
