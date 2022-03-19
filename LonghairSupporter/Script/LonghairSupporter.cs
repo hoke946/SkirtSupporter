@@ -114,19 +114,29 @@ public class LonghairSupporter : MonoBehaviour {
             }
             if (group.hairsParent == null) { continue; }
 
-            AutoSetSkirtBones(group);
+            AutoSetHairBones(group);
             bp_idx++;
         }
     }
 
-    private void AutoSetSkirtBones(HairsGroup group)
+    private void AutoSetHairBones(HairsGroup group)
     {
         Vector3 before_position = transform.position;
         Quaternion before_rotation = transform.rotation;
-        foreach (Transform skirtbone in group.hairsParent.transform)
+        foreach (Transform hairbone in group.hairsParent.transform)
         {
             HairsGroup.BoneSet boneset = new HairsGroup.BoneSet();
-            boneset.boneObject = skirtbone.gameObject;
+            boneset.boneObject = hairbone.gameObject;
+            if (hairbone.name.Contains("_root"))
+            {
+                if (hairbone.childCount > 0 && hairbone.GetChild(0).name.Contains("_branch1"))
+                {
+                    if (hairbone.GetChild(0).childCount > 0 && hairbone.GetChild(0).GetChild(0).name.Contains("_branch2"))
+                    {
+                        boneset.boneObject = hairbone.GetChild(0).GetChild(0).GetChild(0).gameObject;
+                    }
+                }
+            }
             group.hairBones.Add(boneset);
         }
         transform.position = before_position;

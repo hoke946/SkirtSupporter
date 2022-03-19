@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Animations;
 
 [CustomEditor(typeof(SkirtSupporter))]//拡張するクラスを指定
 public class SkirtSupporterEditor : Editor
@@ -46,6 +47,10 @@ public class SkirtSupporterEditor : Editor
         {
             SetSkirtHung();
         }
+        else
+        {
+            ClearSkirtHangObject();
+        }
 
         skirtSupporter.hips.root.position = back_position;
         skirtSupporter.hips.root.rotation = back_rotation;
@@ -79,13 +84,6 @@ public class SkirtSupporterEditor : Editor
             }
             i++;
         }
-        /*
-        if (skirtSupporter.rightUpperLeg.Find("DBC_R") != null ||
-            skirtSupporter.leftUpperLeg.Find("DBC_L") != null)
-        {
-            Alert("既に生成されたDynamicBoneColliderがあります。");
-        }
-        */
         if (skirtSupporter.skirtHang && PrefabUtility.GetCorrespondingObjectFromSource(skirtSupporter.avatarAnimator.gameObject))
         {
             if (EditorUtility.DisplayDialog("Confirm", "Prefabを解除しても問題ないですか？", "OK", "Cancel"))
@@ -104,6 +102,10 @@ public class SkirtSupporterEditor : Editor
         List<Transform> targets = new List<Transform>();
         targets.Add(skirtSupporter.hips.Find("SubLegR"));
         targets.Add(skirtSupporter.hips.Find("SubLegL"));
+        targets.Add(skirtSupporter.hips.Find("_SubLegR"));
+        targets.Add(skirtSupporter.hips.Find("_SubLegL"));
+        targets.Add(skirtSupporter.hips.Find("_HangFrontTarget"));
+        targets.Add(skirtSupporter.hips.parent.Find("_HangAimParent"));
         foreach (DynamicBone db in skirtSupporter.hips.GetComponents<DynamicBone>())
         {
             foreach (Transform target in targets)
@@ -165,42 +167,69 @@ public class SkirtSupporterEditor : Editor
         {
             Transform lowerLeg = right ? skirtSupporter.rightLowerLeg : skirtSupporter.leftLowerLeg;
 
-            GameObject subLeg = new GameObject("SubLeg" + name);
-            subLeg.transform.parent = skirtSupporter.hips;
-            subLeg.transform.position = upperLeg.transform.position;
-            subLeg.transform.rotation = upperLeg.transform.rotation;
-            subLeg.transform.localScale = new Vector3(1, 1, 1);
+            if (skirtSupporter.useConstraint)
+            {
+                GameObject subLeg = new GameObject("_SubLeg" + name);
+                subLeg.transform.SetParent(skirtSupporter.hips, false);
+                subLeg.transform.SetPositionAndRotation(upperLeg.transform.position, upperLeg.transform.rotation);
 
-            GameObject subLeg1 = new GameObject("SubLeg" + name + ".1");
-            subLeg1.transform.parent = subLeg.transform;
-            subLeg1.transform.position = Vector3.Lerp(upperLeg.transform.position , lowerLeg.transform.position, 0.25f);
-            subLeg1.transform.localRotation = Quaternion.identity;
-            subLeg1.transform.localScale = new Vector3(1, 1, 1);
+                GameObject subLeg1 = new GameObject("_SubLeg" + name + ".1");
+                subLeg1.transform.SetParent(subLeg.transform, false);
 
-            DBC_root.transform.parent = subLeg1.transform;
-            DBC_root.transform.position = Vector3.Lerp(upperLeg.transform.position, lowerLeg.transform.position, 0.5f);
+                AimConstraint constraint = subLeg1.gameObject.AddComponent<AimConstraint>();
+                ConstraintSource source = new ConstraintSource();
+                source.sourceTransform = lowerLeg.transform;
+                source.weight = 1;
+                constraint.AddSource(source);
+                constraint.locked = true;
+                constraint.worldUpType = AimConstraint.WorldUpType.ObjectRotationUp;
+                constraint.worldUpVector = new Vector3(1, 0, 0);
+                constraint.worldUpObject = subLeg.transform;
+                constraint.aimVector = new Vector3(0, 1, 0);
+                constraint.upVector = new Vector3(1, 0, 0);
+                constraint.constraintActive = true;
 
-            GameObject subGuide = new GameObject("SubGuide" + name);
-            subGuide.transform.parent = lowerLeg;
-            subGuide.transform.localPosition = Vector3.zero;
-            subGuide.transform.localRotation = Quaternion.identity;
-            subGuide.transform.localScale = new Vector3(1 / lowerLeg.lossyScale.x,
-                                                        1 / lowerLeg.lossyScale.y,
-                                                        1 / lowerLeg.lossyScale.z);
+                DBC_root.transform.SetParent(subLeg1.transform, false);
+            }
+            else
+            {
+                GameObject subLeg = new GameObject("SubLeg" + name);
+                subLeg.transform.parent = skirtSupporter.hips;
+                subLeg.transform.position = upperLeg.transform.position;
+                subLeg.transform.rotation = upperLeg.transform.rotation;
+                subLeg.transform.localScale = new Vector3(1, 1, 1);
 
-            DynamicBoneCollider guide_dbc = subGuide.AddComponent<DynamicBoneCollider>();
-            guide_dbc.m_Bound = DynamicBoneCollider.Bound.Inside;
-            guide_dbc.m_Radius = 0.001f;
+                GameObject subLeg1 = new GameObject("SubLeg" + name + ".1");
+                subLeg1.transform.parent = subLeg.transform;
+                subLeg1.transform.position = Vector3.Lerp(upperLeg.transform.position, lowerLeg.transform.position, 0.25f);
+                subLeg1.transform.localRotation = Quaternion.identity;
+                subLeg1.transform.localScale = new Vector3(1, 1, 1);
 
-            DynamicBone db = skirtSupporter.hips.gameObject.AddComponent<DynamicBone>();
-            db.m_Root = subLeg.transform;
-            db.m_Damping = 0.01f;
-            db.m_Elasticity = 0.01f;
-            db.m_Stiffness = 0.01f;
-            db.m_Colliders = new List<DynamicBoneColliderBase>();
-            db.m_Colliders.Add(subGuide.GetComponent<DynamicBoneCollider>());
-            db.m_Exclusions = new List<Transform>();
-            db.m_Exclusions.Add(DBC_root.transform);
+                DBC_root.transform.parent = subLeg1.transform;
+                DBC_root.transform.position = Vector3.Lerp(upperLeg.transform.position, lowerLeg.transform.position, 0.5f);
+
+                GameObject subGuide = new GameObject("SubGuide" + name);
+                subGuide.transform.parent = lowerLeg;
+                subGuide.transform.localPosition = Vector3.zero;
+                subGuide.transform.localRotation = Quaternion.identity;
+                subGuide.transform.localScale = new Vector3(1 / lowerLeg.lossyScale.x,
+                                                            1 / lowerLeg.lossyScale.y,
+                                                            1 / lowerLeg.lossyScale.z);
+
+                DynamicBoneCollider guide_dbc = subGuide.AddComponent<DynamicBoneCollider>();
+                guide_dbc.m_Bound = DynamicBoneCollider.Bound.Inside;
+                guide_dbc.m_Radius = 0.001f;
+
+                DynamicBone db = skirtSupporter.hips.gameObject.AddComponent<DynamicBone>();
+                db.m_Root = subLeg.transform;
+                db.m_Damping = 0.01f;
+                db.m_Elasticity = 0.01f;
+                db.m_Stiffness = 0.01f;
+                db.m_Colliders = new List<DynamicBoneColliderBase>();
+                db.m_Colliders.Add(subGuide.GetComponent<DynamicBoneCollider>());
+                db.m_Exclusions = new List<Transform>();
+                db.m_Exclusions.Add(DBC_root.transform);
+            }
         }
         else
         {
@@ -255,33 +284,75 @@ public class SkirtSupporterEditor : Editor
     {
         Transform exist = skirtSupporter.hips.Find("SkirtRoot");
 
-        GameObject skirt_root = new GameObject("SkirtRoot");
-        skirt_root.transform.parent = skirtSupporter.hips;
-        skirt_root.transform.position = skirtSupporter.skirtsParent.transform.position + new Vector3(0, 0.001f, 0);
-        skirt_root.transform.rotation = Quaternion.identity;
-        skirt_root.transform.localScale = new Vector3(1, 1, 1);
-
-        DynamicBone db = skirt_root.AddComponent<DynamicBone>();
-        db.m_Root = skirt_root.transform;
-        db.m_Damping = 0;
-        db.m_Elasticity = 0;
-        db.m_Stiffness = 0;
-        db.m_Gravity = new Vector3(0, -1, 0);
-        db.m_Force = new Vector3(0, -1, 0);
-        db.m_Exclusions = new List<Transform>();
-
-        GameObject skirt_branch = new GameObject("SkirtBranch");
-        skirt_branch.transform.parent = skirt_root.transform;
-        skirt_branch.transform.position = skirtSupporter.skirtsParent.transform.position;
-        skirt_branch.transform.rotation = skirtSupporter.skirtsParent.transform.rotation;
-        skirt_branch.transform.localScale = new Vector3(skirtSupporter.skirtsParent.transform.lossyScale.x / skirtSupporter.hips.lossyScale.x,
-                                                        skirtSupporter.skirtsParent.transform.lossyScale.y / skirtSupporter.hips.lossyScale.y,
-                                                        skirtSupporter.skirtsParent.transform.lossyScale.z / skirtSupporter.hips.lossyScale.z);
-
-        foreach (SkirtSupporter.BoneSet skirt in skirtSupporter.skirtBones)
+        if (skirtSupporter.useConstraint)
         {
-            skirt.boneObject.transform.parent = skirt_branch.transform;
-            db.m_Exclusions.Add(skirt.boneObject.transform);
+            GameObject front = new GameObject("_HangFrontTarget");
+            front.transform.SetParent(skirtSupporter.hips.transform, false);
+            front.transform.localPosition = Vector3.forward;
+
+            GameObject aim_parent = new GameObject("_HangAimParent");
+            aim_parent.transform.SetParent(skirtSupporter.hips.parent, false);
+            aim_parent.transform.SetPositionAndRotation(front.transform.position, front.transform.rotation);
+
+            GameObject aim = new GameObject("_HangAimTarget");
+            aim.transform.SetParent(aim_parent.transform, false);
+
+            var posconstraint = aim.AddComponent<PositionConstraint>();
+            ConstraintSource posconstraint_source = new ConstraintSource();
+            posconstraint_source.sourceTransform = front.transform;
+            posconstraint_source.weight = 1;
+            posconstraint.AddSource(posconstraint_source);
+            posconstraint.locked = true;
+            posconstraint.translationAxis = Axis.X | Axis.Z;
+            posconstraint.constraintActive = true;
+
+            GameObject skirt_root = new GameObject("SkirtRoot");
+            skirt_root.transform.SetParent(skirtSupporter.hips, false);
+            skirt_root.transform.position = skirtSupporter.skirtsParent.transform.position;
+
+            var aimconstraint = skirt_root.AddComponent<AimConstraint>();
+            ConstraintSource aimconstraint_source = new ConstraintSource();
+            aimconstraint_source.sourceTransform = aim.transform;
+            aimconstraint_source.weight = 1;
+            aimconstraint.AddSource(aimconstraint_source);
+            aimconstraint.locked = true;
+            aimconstraint.constraintActive = true;
+
+            foreach (SkirtSupporter.BoneSet skirt in skirtSupporter.skirtBones)
+            {
+                skirt.boneObject.transform.SetParent(skirt_root.transform, true);
+            }
+        }
+        else
+        {
+            GameObject skirt_root = new GameObject("SkirtRoot");
+            skirt_root.transform.parent = skirtSupporter.hips;
+            skirt_root.transform.position = skirtSupporter.skirtsParent.transform.position + new Vector3(0, 0.001f, 0);
+            skirt_root.transform.rotation = Quaternion.identity;
+            skirt_root.transform.localScale = new Vector3(1, 1, 1);
+
+            DynamicBone db = skirt_root.AddComponent<DynamicBone>();
+            db.m_Root = skirt_root.transform;
+            db.m_Damping = 0;
+            db.m_Elasticity = 0;
+            db.m_Stiffness = 0;
+            db.m_Gravity = new Vector3(0, -1, 0);
+            db.m_Force = new Vector3(0, -1, 0);
+            db.m_Exclusions = new List<Transform>();
+
+            GameObject skirt_branch = new GameObject("SkirtBranch");
+            skirt_branch.transform.parent = skirt_root.transform;
+            skirt_branch.transform.position = skirtSupporter.skirtsParent.transform.position;
+            skirt_branch.transform.rotation = skirtSupporter.skirtsParent.transform.rotation;
+            skirt_branch.transform.localScale = new Vector3(skirtSupporter.skirtsParent.transform.lossyScale.x / skirtSupporter.hips.lossyScale.x,
+                                                            skirtSupporter.skirtsParent.transform.lossyScale.y / skirtSupporter.hips.lossyScale.y,
+                                                            skirtSupporter.skirtsParent.transform.lossyScale.z / skirtSupporter.hips.lossyScale.z);
+
+            foreach (SkirtSupporter.BoneSet skirt in skirtSupporter.skirtBones)
+            {
+                skirt.boneObject.transform.parent = skirt_branch.transform;
+                db.m_Exclusions.Add(skirt.boneObject.transform);
+            }
         }
 
         if (exist != null)
@@ -332,6 +403,36 @@ public class SkirtSupporterEditor : Editor
         return affectedObjects;
     }
 
+    private void ClearSkirtHangObject()
+    {
+        Transform skirtparent = null;
+
+        foreach (SkirtSupporter.BoneSet skirt in skirtSupporter.skirtBones)
+        {
+            if (skirt.boneObject.transform.parent != skirtSupporter.skirtsParent)
+            {
+                var parent = skirt.boneObject.transform.parent;
+                if (parent != null)
+                {
+                    skirtparent = parent;
+                }
+                skirt.boneObject.transform.SetParent(skirtSupporter.skirtsParent.transform, true);
+            }
+        }
+
+        if (skirtparent != null && skirtparent.name == "SkirtRoot")
+        {
+            DestroyImmediate(skirtparent.gameObject);
+        }
+        else if (skirtparent != null && skirtparent.name == "SkirtBranch")
+        {
+            if (skirtparent.parent != null && skirtparent.parent.name == "SkirtRoot")
+            {
+                DestroyImmediate(skirtparent.parent.gameObject);
+            }
+        }
+    }
+
     private void Alert(string message, bool error = true)
     {
         if (error)
@@ -345,4 +446,5 @@ public class SkirtSupporterEditor : Editor
             Debug.LogWarning(message);
         }
     }
+
 }

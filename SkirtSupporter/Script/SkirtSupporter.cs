@@ -40,6 +40,8 @@ public class SkirtSupporter : MonoBehaviour {
     public bool skirtHang;
     [Tooltip("ねじり打ち消し機構を実装")]
     public bool twistCancel;
+    [Tooltip("SkirtHangやTwistCancelをConstraint方式にする")]
+    public bool useConstraint;
     [Tooltip("スカートのDynamicBoneをクリアして再設定する")]
     public bool dynamicBoneReset;
 
@@ -117,33 +119,59 @@ public class SkirtSupporter : MonoBehaviour {
 
             BoneSet boneset = new BoneSet();
             boneset.boneObject = skirtbone.gameObject;
-
-            Vector3 targetposition = skirtbone.GetChild(0).position;
-            //右足から推定
-            transform.position = new Vector3(rightUpperLeg.position.x, targetposition.y, rightUpperLeg.position.z);
-            transform.LookAt(targetposition);
-            float guess = transform.eulerAngles.y;
-            if (guess > 180)
+            if (skirtbone.name == "SkirtRoot")
             {
-                //左足から推定
-                transform.position = new Vector3(leftUpperLeg.position.x, targetposition.y, leftUpperLeg.position.z);
-                transform.LookAt(targetposition);
-                guess = transform.eulerAngles.y;
-                if (guess < 180 || guess > 360)
+                if (skirtbone.childCount > 0 && skirtbone.GetChild(0).name == "SkirtBranch")
                 {
-                    //お尻から推定
-                    transform.position = new Vector3(hips.position.x, targetposition.y, hips.position.z);
-                    transform.LookAt(targetposition);
-                    guess = transform.eulerAngles.y;
+                    foreach (Transform bone in skirtbone.GetChild(0).transform)
+                    {
+                        skirtBones.Add(SetBoneSet(bone));
+                    }
+                    boneset.boneObject = skirtbone.GetChild(0).GetChild(0).gameObject;
+                }
+                else
+                {
+                    foreach (Transform bone in skirtbone.transform)
+                    {
+                        skirtBones.Add(SetBoneSet(bone));
+                    }
                 }
             }
-            boneset.angle = (int)guess == 360 ? 0 : (int)guess;
-
-            skirtBones.Add(boneset);
+            else
+            {
+                skirtBones.Add(SetBoneSet(skirtbone));
+            }
         }
         transform.position = before_position;
         transform.rotation = before_rotation;
         Debug.Log(skirtsParent.name + "配下のGameObjectからSkirtBonesを自動設定しました。");
+    }
+
+    private BoneSet SetBoneSet(Transform bone)
+    {
+        BoneSet boneset = new BoneSet();
+        boneset.boneObject = bone.gameObject;
+        Vector3 targetposition = bone.GetChild(0).position;
+        //右足から推定
+        transform.position = new Vector3(rightUpperLeg.position.x, targetposition.y, rightUpperLeg.position.z);
+        transform.LookAt(targetposition);
+        float guess = transform.eulerAngles.y;
+        if (guess > 180)
+        {
+            //左足から推定
+            transform.position = new Vector3(leftUpperLeg.position.x, targetposition.y, leftUpperLeg.position.z);
+            transform.LookAt(targetposition);
+            guess = transform.eulerAngles.y;
+            if (guess < 180 || guess > 360)
+            {
+                //お尻から推定
+                transform.position = new Vector3(hips.position.x, targetposition.y, hips.position.z);
+                transform.LookAt(targetposition);
+                guess = transform.eulerAngles.y;
+            }
+        }
+        boneset.angle = (int)guess == 360 ? 0 : (int)guess;
+        return boneset;
     }
 
     private void OptimizeSkirtBones()
@@ -161,12 +189,13 @@ public class SkirtSupporter : MonoBehaviour {
 
     private void Start()
     {
-        if (twistCancel && skirtsParent)
+        if (twistCancel && skirtsParent && !useConstraint)
         {
-            StartCoroutine(ResetSequence());
+            //StartCoroutine(ResetSequence());
         }
     }
 
+    /* 逆効果？
     private IEnumerator ResetSequence()
     {
         DynamicBone[] dbs = skirtsParent.GetComponentsInChildren<DynamicBone>();
@@ -182,4 +211,5 @@ public class SkirtSupporter : MonoBehaviour {
             db.enabled = true;
         }
     }
+    */
 }

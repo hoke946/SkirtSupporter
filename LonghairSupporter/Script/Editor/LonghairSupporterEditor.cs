@@ -234,10 +234,28 @@ public class LonghairSupporterEditor : Editor
                         }
                     }
                 }
+                else
+                {
+                    if (hair.boneObject.transform.parent != group.hairsParent.transform)
+                    {
+                        var parent = hair.boneObject.transform.parent;
+                        hair.boneObject.transform.SetParent(group.hairsParent.transform, true);
+                        if (parent != null && parent.name.Contains("_branch2"))
+                        {
+                            if (parent.parent != null && parent.parent.name.Contains("_branch1"))
+                            {
+                                if (parent.parent.parent != null && parent.parent.parent.name.Contains("_root"))
+                                {
+                                    DestroyImmediate(parent.parent.parent.gameObject);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-    
+
     private void AfterCheck()
     {
         foreach (DynamicBone db in longhairSupporter.head.root.GetComponentsInChildren<DynamicBone>())
