@@ -30,8 +30,8 @@ LonghairSupporterの詳細は https://sites.google.com/view/longhairsup をご�
 
 ## ダウンロード
 こちらから入手できます。  
-[SkirtSupporter最新版 v1.2.2](https://github.com/hoke946/SkirtSupporter/releases/tag/SSv1.2.2)  
-[LonghairSupporter最新版 v1.0.2](https://github.com/hoke946/SkirtSupporter/releases/tag/SSv1.2.1_LSv1.0.2) 
+[SkirtSupporter最新版 v1.2.3](https://github.com/hoke946/SkirtSupporter/releases/tag/SSv1.2.3_LHSv1.0.3)  
+[LonghairSupporter最新版 v1.0.3](https://github.com/hoke946/SkirtSupporter/releases/tag/SSv1.2.3_LHSv1.0.3) 
 
 ## 説明書
 ⇒[SkirtSupporter](https://sites.google.com/view/skirtsup)  
