@@ -14,7 +14,7 @@ DynamicBone版はVRChatのPhysBone移行を機に終息させる予定です。
 
 ## ダウンロード
 こちらから入手できます。  
-[SkirtSupporterPB最新版 v0.0.1](https://github.com/hoke946/SkirtSupporter/releases/tag/SSPBv0.0.1_LSPBv0.0.1)  
+[SkirtSupporterPB最新版 v0.0.2](https://github.com/hoke946/SkirtSupporter/releases/tag/SSPBv0.0.2)  
 [LonghairSupporterPB最新版 v0.0.1](https://github.com/hoke946/SkirtSupporter/releases/tag/SSPBv0.0.1_LSPBv0.0.1) 
 
 ## 最新バージョン
