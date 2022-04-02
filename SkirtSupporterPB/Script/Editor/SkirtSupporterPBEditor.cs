@@ -228,8 +228,7 @@ public class SkirtSupporterPBEditor : Editor
             {
                 GameObject PBC_branch = new GameObject("PBC_" + name + "_" + skirt.boneObject.name);
                 PBC_branch.transform.SetParent(PBC_root.transform, false);
-                //PBC_branch.transform.position = skirt.boneObject.transform.GetChild(0).position;
-                PBC_branch.transform.position = new Vector3(0, skirt.boneObject.transform.GetChild(0).position.y, 0);
+                PBC_branch.transform.position = skirt.boneObject.transform.GetChild(0).position;
                 PBC_branch.transform.Rotate(0, skirt.angle, 0);
 
                 GameObject PBC_prefab = (GameObject)PrefabUtility.InstantiatePrefab(skirtSupporter.colliderPrefab);
