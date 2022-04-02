@@ -13,7 +13,7 @@ VRChatのPhysBone対応を受け、取り急ぎPhysBone対応版を用意しま�
 まだ、細かい説明はありませんが、使用条件、使用方法はDynamicBone版とほぼ同様です。  
 DynamicBone版はVRChatのPhysBone移行を機に終息させる予定です。
 
-## ダウンロード
+## PhysBone版ダウンロード
 こちらから入手できます。  
 [SkirtSupporterPB最新版 v0.0.3](https://github.com/hoke946/SkirtSupporter/releases/tag/SSPBv0.0.3)  
 [LonghairSupporterPB最新版 v0.0.1](https://github.com/hoke946/SkirtSupporter/releases/tag/SSPBv0.0.1_LSPBv0.0.1) 
@@ -29,7 +29,7 @@ LonghairSupporterPB : 0.0.1
 SkirtSupporterの詳細は https://sites.google.com/view/skirtsup をご覧ください。  
 LonghairSupporterの詳細は https://sites.google.com/view/longhairsup をご覧ください。  
 
-## ダウンロード
+## DynamicBone版ダウンロード
 こちらから入手できます。  
 [SkirtSupporter最新版 v1.2.3](https://github.com/hoke946/SkirtSupporter/releases/tag/SSv1.2.3_LHSv1.0.3)  
 [LonghairSupporter最新版 v1.0.3](https://github.com/hoke946/SkirtSupporter/releases/tag/SSv1.2.3_LHSv1.0.3) 
