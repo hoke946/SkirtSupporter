@@ -3,7 +3,8 @@
 これはVRChat用アバターのDynamicBone設定を支援するツールでしたが、  
 VRChatのPhysBone対応を受け、取り急ぎPhysBone対応版を用意しました。  
   
-・Insideコライダーがないため、Planeコライダーで代用しました。  
+・~~Insideコライダーがないため、Planeコライダーで代用しました。~~  
+　　⇒Insideコライダー対応されたので適応させました！  
 ・SkirtHangはPhysBoneでは機能しないため、Constraintで代用しました。  
 ・TwistCancelはPhysBoneでは機能しないため、Constraintで代用しました。  
 ・HairHangは諦めました。  
@@ -14,7 +15,7 @@ DynamicBone版はVRChatのPhysBone移行を機に終息させる予定です。
 
 ## ダウンロード
 こちらから入手できます。  
-[SkirtSupporterPB最新版 v0.0.2](https://github.com/hoke946/SkirtSupporter/releases/tag/SSPBv0.0.2)  
+[SkirtSupporterPB最新版 v0.0.3](https://github.com/hoke946/SkirtSupporter/releases/tag/SSPBv0.0.3)  
 [LonghairSupporterPB最新版 v0.0.1](https://github.com/hoke946/SkirtSupporter/releases/tag/SSPBv0.0.1_LSPBv0.0.1) 
 
 ## 最新バージョン
