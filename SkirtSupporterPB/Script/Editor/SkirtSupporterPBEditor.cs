@@ -104,6 +104,7 @@ public class SkirtSupporterPBEditor : Editor
         targets.Add(skirtSupporter.hips.Find("_SubLegL"));
         targets.Add(skirtSupporter.rightUpperLeg.Find("PBC_R"));
         targets.Add(skirtSupporter.leftUpperLeg.Find("PBC_L"));
+        targets.Add(skirtSupporter.hips.Find("_HangFrontParent"));
         targets.Add(skirtSupporter.hips.Find("_HangFrontTarget"));
         targets.Add(skirtSupporter.hips.parent.Find("_HangAimParent"));
 
@@ -240,10 +241,15 @@ public class SkirtSupporterPBEditor : Editor
 
     private void SetSkirtHang()
     {
-        GameObject front = new GameObject("_HangFrontTarget");
-        front.transform.SetParent(skirtSupporter.hips.transform, false);
-        front.transform.localPosition = Vector3.forward;
         Transform exist = skirtSupporter.hips.Find("SkirtRoot");
+
+        GameObject front_parent = new GameObject("_HangFrontParent");
+        front_parent.transform.SetParent(skirtSupporter.hips.transform, false);
+        front_parent.transform.rotation = skirtSupporter.hips.root.rotation;
+
+        GameObject front = new GameObject("_HangFrontTarget");
+        front.transform.SetParent(front_parent.transform, false);
+        front.transform.localPosition = Vector3.forward;
 
         GameObject aim_parent = new GameObject("_HangAimParent");
         aim_parent.transform.SetParent(skirtSupporter.hips.parent, false);
@@ -264,6 +270,7 @@ public class SkirtSupporterPBEditor : Editor
         GameObject skirt_root = new GameObject("SkirtRoot");
         skirt_root.transform.SetParent(skirtSupporter.hips, false);
         skirt_root.transform.position = skirtSupporter.skirtsParent.transform.position;
+        skirt_root.transform.rotation = front.transform.rotation;
 
         var aimconstraint = skirt_root.AddComponent<AimConstraint>();
         ConstraintSource aimconstraint_source = new ConstraintSource();
