@@ -104,6 +104,7 @@ public class SkirtSupporterEditor : Editor
         targets.Add(skirtSupporter.hips.Find("SubLegL"));
         targets.Add(skirtSupporter.hips.Find("_SubLegR"));
         targets.Add(skirtSupporter.hips.Find("_SubLegL"));
+        targets.Add(skirtSupporter.hips.Find("_HangFrontParent"));
         targets.Add(skirtSupporter.hips.Find("_HangFrontTarget"));
         targets.Add(skirtSupporter.hips.parent.Find("_HangAimParent"));
         foreach (DynamicBone db in skirtSupporter.hips.GetComponents<DynamicBone>())
@@ -286,8 +287,12 @@ public class SkirtSupporterEditor : Editor
 
         if (skirtSupporter.useConstraint)
         {
+            GameObject front_parent = new GameObject("_HangFrontParent");
+            front_parent.transform.SetParent(skirtSupporter.hips.transform, false);
+            front_parent.transform.rotation = skirtSupporter.hips.root.rotation;
+
             GameObject front = new GameObject("_HangFrontTarget");
-            front.transform.SetParent(skirtSupporter.hips.transform, false);
+            front.transform.SetParent(front_parent.transform, false);
             front.transform.localPosition = Vector3.forward;
 
             GameObject aim_parent = new GameObject("_HangAimParent");
@@ -309,6 +314,7 @@ public class SkirtSupporterEditor : Editor
             GameObject skirt_root = new GameObject("SkirtRoot");
             skirt_root.transform.SetParent(skirtSupporter.hips, false);
             skirt_root.transform.position = skirtSupporter.skirtsParent.transform.position;
+            skirt_root.transform.rotation = front.transform.rotation;
 
             var aimconstraint = skirt_root.AddComponent<AimConstraint>();
             ConstraintSource aimconstraint_source = new ConstraintSource();
